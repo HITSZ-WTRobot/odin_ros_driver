@@ -6,7 +6,7 @@ register_keys:
   # 0: use odin internal system time as data time stamp, typical and recommended;
   # 1: use host ros time (upon receive) as data time stamp, only use if you specifically require this setup, not recommended for most users
   # 2: align odin1 time to host time, timestamp is the sensor data reception time on host time axis
-  use_host_ros_time: 0  # Changed to 0 to use device timestamp without PTP offset correction
+  use_host_ros_time: 2
 
   streamctrl: 1           # 0: off; 1: on
 
@@ -20,13 +20,13 @@ register_keys:
   # undistort rgb image processed from decoded rgb data.
   # depends on sendrgb. related camera parameters can be found in ws/src/odin_ros_driver/config/calib.yaml
   # Processed on host device
-  sendrgbundistort: 0    # 0: off; 1: on.
+  sendrgbundistort: 1     # 0: off; 1: on.
 
   # IMU data
   sendimu: 1              # 0: off; 1: on
 
   # SDK IMU smooth sending feature
-  # When enabled, SDK will send IMU data at precise intervals (default 400Hz) 
+  # When enabled, SDK will send IMU data at precise intervals (default 400Hz)
   # using a dedicated high-priority thread to reduce jitter and timing variance
   enable_imu_smooth: 0    # 0: disable SDK IMU smooth sending; 1: enable (default)
 
@@ -59,11 +59,11 @@ register_keys:
   # depth completion demo, high computing resource usage. 
   # for more information please refer to the readme file.
   # Processed on host device
-  senddepth: 0            # 0: off; 1: on
+  senddepth: 1            # 0: off; 1: on
 
   # cloud reprojection demo, projects cloud_slam to camera image using odometry
   # Processed on host device
-  sendreprojection: 0    # 0: off; 1: on
+  sendreprojection: 1    # 0: off; 1: on
 
   # image overlay settings - overlays reprojected points on camera image
   # Processed on host device
@@ -73,7 +73,7 @@ register_keys:
   overlay_output_topic: "/odin1/overlay_image"           # output overlay image topic
   overlay_alpha: 0.6                                     # blend alpha (0.0-1.0, higher = more reproj color)
 
-  # record rgb, odometry, and slam cloud data as proprietary olx format for further processing in MindCloud(TM) software. 
+  # record rgb, odometry, and slam cloud data as proprietary olx format for further processing in MindCloud(TM) software.
   # save path: ws/src/odin_ros_driver/recorddata/{record_start_time}/
   # ATTENTION: please copy the full folder for post-processing.
   recorddata: 0           # 0: off; 1: on
@@ -89,7 +89,7 @@ register_keys:
   showpath: 0             # 0: off; 1: on
   showcamerapose: 0       # 0: off; 1: on
   
-  custom_map_mode: 0      # 0: Odometry mode 1: SLAM mode 2: Relocalization mode
+  custom_map_mode: 1      # 0: Odometry mode 1: SLAM mode 2: Relocalization mode
   custom_init_pos: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]
   relocalization_map_abs_path: "" # must be set for Relocalization mode or will fail
 
