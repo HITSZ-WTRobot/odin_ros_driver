@@ -1,9 +1,33 @@
 #!/bin/bash
 
+resolve_workspace_root() {
+    if [ -n "${WS_DIR:-}" ]; then
+        cd "${WS_DIR}" && pwd -P
+        return
+    fi
+
+    local current="${PKG_DIR}"
+    while [ "${current}" != "/" ]; do
+        if [ -d "${current}/src" ]; then
+            case "${PKG_DIR}/" in
+                "${current}/src/"*)
+                    printf '%s\n' "${current}"
+                    return
+                    ;;
+            esac
+        fi
+        current="$(dirname "${current}")"
+    done
+
+    # Fallback for the upstream layout: <workspace>/src/odin_ros_driver.
+    dirname "$(dirname "${PKG_DIR}")"
+}
+
 # Get the directory where the script is located (Odin_ROS_Driver directory)
-PKG_DIR="$(cd "$(dirname "$0")/.."; pwd)"
-# Calculate the workspace root directory (contains devel, build, src)
-WORKSPACE_ROOT="$(dirname "$(dirname "$PKG_DIR")")"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+PKG_DIR="$(cd "${SCRIPT_DIR}/.." && pwd -P)"
+# Calculate the workspace root directory (contains install, build, src)
+WORKSPACE_ROOT="$(resolve_workspace_root)"
 # Workspace source directory (contains all packages)
 WORKSPACE_SRC="${WORKSPACE_ROOT}/src"
 PROJECT_NAME="odin_ros_driver"
@@ -65,7 +89,7 @@ build_workspace() {
     
     echo -e "${YELLOW}Starting ROS2 project build...${NC}"
 
-    cd $WS_DIR
+    cd "${WORKSPACE_ROOT}" || return 1
     rm -rf build install log
     # Ensure ROS2 environment is loaded
     if [ -f "/opt/ros/foxy/setup.bash" ]; then
@@ -104,8 +128,6 @@ build_workspace() {
     export BUILD_SYSTEM=ROS2
     
     # Switch to workspace root and build
-    cd "${WORKSPACE_ROOT}" || return 1
-    
     # Build with correct package name
     colcon build \
         --packages-select "${PACKAGE_NAME}" \
