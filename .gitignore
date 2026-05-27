@@ -2,3 +2,4 @@ recorddata/
 /config/calib.yaml
 /log
 /map
+__pycache__
