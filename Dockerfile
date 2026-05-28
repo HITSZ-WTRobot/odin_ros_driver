@@ -7,8 +7,8 @@ ARG ROS_DISTRO=humble
 ARG UBUNTU_MIRROR=https://mirrors.osa.moe/ubuntu/
 
 ENV ROS_DISTRO=${ROS_DISTRO} \
-    WORKSPACE_DIR=/ros2_ws \
-    ODIN_ROS_DRIVER_DIR=/ros2_ws/src/odin_ros_driver \
+    WORKSPACE_DIR=/workspace \
+    ODIN_ROS_DRIVER_DIR=/workspace/src/odin_ros_driver \
     DEBIAN_FRONTEND=noninteractive
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -96,7 +96,7 @@ RUN mkdir -p "${ODIN_ROS_DRIVER_DIR}/config" "${ODIN_ROS_DRIVER_DIR}/map" \
     && rm -rf "${WORKSPACE_DIR}/install/odin_ros_driver/share/odin_ros_driver/config" \
     && ln -s "${ODIN_ROS_DRIVER_DIR}/config" "${WORKSPACE_DIR}/install/odin_ros_driver/share/odin_ros_driver/config"
 
-VOLUME ["/ros2_ws/src/odin_ros_driver/config", "/ros2_ws/src/odin_ros_driver/map"]
+VOLUME ["/workspace/src/odin_ros_driver/config", "/workspace/src/odin_ros_driver/map"]
 
 COPY --chmod=755 docker/ros_entrypoint.sh /ros_entrypoint.sh
 
