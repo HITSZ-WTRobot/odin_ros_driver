@@ -4,8 +4,8 @@ ARG ROS_DISTRO=humble
 FROM ros:${ROS_DISTRO}-ros-base
 
 ARG ROS_DISTRO=humble
-ARG UBUNTU_MIRROR=https://mirrors.osa.moe/ubuntu/
-ARG ROS2_APT_MIRROR=https://mirrors.osa.moe/ros2/ubuntu
+ARG UBUNTU_MIRROR=https://mirror.nju.edu.cn/ubuntu/
+ARG ROS2_APT_MIRROR=https://mirrors.nju.edu.cn/ros2/ubuntu
 
 ENV ROS_DISTRO=${ROS_DISTRO} \
     WORKSPACE_DIR=/workspace \
