@@ -51,7 +51,9 @@ for ros_source in \
 done
 EOF
 
-RUN apt-get update \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update \
     && apt-get install -y --no-install-recommends \
         build-essential \
         cmake \
@@ -83,8 +85,7 @@ RUN apt-get update \
         ros-${ROS_DISTRO}-tf2-geometry-msgs \
         ros-${ROS_DISTRO}-tf2-ros \
         ros-${ROS_DISTRO}-visualization-msgs \
-        usbutils \
-    && rm -rf /var/lib/apt/lists/*
+        usbutils
 
 WORKDIR ${WORKSPACE_DIR}
 
